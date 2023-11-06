@@ -1,0 +1,135 @@
+.popup {
+    height: 100vh;
+    //como hemos visto en otra ocasion el width lo haria automatico al 100% pero lo vamos a dejar
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba($color-black, .8);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+
+
+    // PROPIEDAD NO BACDROP-FILTER NO SOPORTADA POR CHROME, ESTA COMENTADA POR PROPOSITOS DE APRENDIZAJE, SE INCLUYE EN EL @SUPPORT, AHORA LA SOPORTA  
+    /* -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba($color-black, .3); */
+
+    //www.caniuse.com, para ver propiedades y quien las soporta
+
+    //LO QUE HACE EL SUPORT ES PREGUNTAR AL BROWSER, SI LA PROPIEDAD (-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)) USALA Y SE EXPECIFICA ESTA PROPIEDAD A CONTINUACION COMO VEMOS EN ESTE SUPPORT, SI NO FUNCIONAN EN EL NAVEGADOR COGERA LA NATIVA QUE EN ESTE CASO ES LA QUE ESTA ANTES (background-color: rgba($color-black, .8); 
+
+
+    @supports (-webkit-backdrop-filter: blur(10px)) or (backdrop-filter: blur(10px)) {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        background-color: rgba($color-black, .3);
+    }
+
+    
+    &__content {
+        @include absCenter;
+
+        width: 75%;
+        //height: 50rem; for testing purposes
+        background-color: $color-white;
+        box-shadow: 0 2rem 4rem rgba($color-black, .2);
+        border-radius: 3px;
+
+        //Para organizar Fake efecto table
+        display: table;
+        overflow: hidden;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.25);
+
+        // le hemos dado un delay de .2s para energizar el efecto
+        transition: all .5s .2s;
+
+    }
+
+    &__left {
+        width: 33.333333%;
+        
+
+        //Para organizar en la parte de la izquierda
+        display: table-cell;
+
+    }
+
+    &__right{
+        width: 66.666667%;
+
+        //Para organizar en la parte de la derecha
+        display: table-cell;
+        vertical-align: middle;
+        padding: 3rem 5rem;
+
+    }
+
+    &__img {
+        display: block;
+        width: 100%;
+
+    }
+
+    &__text {
+        font-size: 1.4rem;
+        margin-bottom: 4rem;
+
+        //esto lo ponemos para que sea soportado en mozilla, hay un autoprefixer que veremos mas adelante
+        -moz-column-count: 2;
+        -moz-column-gap: 4rem; //1em = 14 pixels 1 em es siempre el tamano de fuente del elemento vigente en este caso 1.4 rem
+        -moz-column-rule: 1px solid $color-grey-light-2 ;
+
+
+        column-count: 2;
+        column-gap: 4rem; //1em = 14 pixels 1 em es siempre el tamano de fuente del elemento vigente en este caso 1.4 rem
+        column-rule: 1px solid $color-grey-light-2 ;
+
+        // Tienen tres opciones none: el valor inicial default, manual: no es util y auto:
+
+        -moz-hyphens: auto;
+        -ms-hyphens: auto;
+        -webkit-hyphens: auto; 
+        hyphens: auto;
+
+    }
+
+
+    //OPEN STATE
+    //esto es para llamar al objetivo
+    &:target {
+        opacity: 1;
+        visibility: visible;
+
+    }
+
+    //para hacer el zoom in del popup
+    &:target &__content {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    &__close {
+        &:link,
+        &:visited {
+            color: $color-grey-dark;
+            position: absolute;
+            top: 2.5rem;
+            right: 2.5rem;
+            font-size: 3rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all .2s;
+            line-height: 1;
+            
+        }
+
+        &:hover {
+            color: $color-primary;
+        }
+
+    }
+}

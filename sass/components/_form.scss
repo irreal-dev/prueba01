@@ -1,0 +1,144 @@
+.form {
+    &__group:not(:last-child) {
+        margin-bottom: 2rem;
+
+    }
+
+    &__input{
+        font-size: 1.5rem;
+        font-family: inherit;
+        color: inherit;
+        padding: 1.5rem 2rem;
+        border-radius: 2px;
+        background-color: rgba($color-white, .5);
+        border: none;
+        // esto lo aplicamos transparente para que no nos cree un movimiento en el texto del imput
+        border-bottom: 3px solid transparent;
+        width: 90%;
+        display:block;
+        transition: all .3s;
+
+        @include respond (tab-port) {
+            width: 100%;
+        }
+
+        &:focus {
+            // esto es para quitar el remarcado que tienen por defecto los forms
+            outline: none;
+            box-shadow: 0 1rem 2rem rgba($color-black, .1);
+            border-bottom: 3px solid $color-primary;
+    
+        }
+
+        &:focus:invalid {
+            border-bottom: 3px solid $color-secondary-dark;
+
+        }
+
+        //Para cambiar el color por defecto del borwser
+        &::-webkit-input-placeholder {
+        color: $color-grey-dark-2;
+    }
+
+    }
+
+    
+
+    
+
+    &__label{
+        font-size:1.2rem ;
+        font-weight: 700;
+        margin-left: 2rem;
+        margin-top: .7rem;
+        display: block;
+        transition: all .3s;
+
+    }
+
+    //esto es para hacer el efecto de animacion del place holder + anade SOLO al primer hermano que este debajo de el, en este caso Sibbling selector que este pod debajo de el
+    //con este simbolo ~ en vez del siguiente hermano, cogeria a todos Sibbling general 
+    //En este caso cojera al label, SIGNIFICADO: Cuando un holder se muestra, significa que no hemos escrito nada en nuestro input y no queremos nada en nuestra Label,
+    
+    &__input:placeholder-shown + &__label {
+        //usamos l opaciti porque es lo que vamos a animar
+        opacity: 0;
+        //establecemos visibility hidden por que asi el elemento tecnicamente no esta, tiene que ir ligada a opacity
+        visibility: hidden;
+        transform: translateY(-4rem);
+    }
+
+
+    // le damos este width para que se separen con 50 queda demasiado grande y no lo hacen, activamos inline-block para que puedan ponerse en una fila
+    &__radio-group {
+        width: 49%;
+        display: inline-block;
+
+        @include respond (tab-port) {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+        
+    }
+
+    //Ocultamos el radio imput, por que no necesitamos verlo, ya hemos creado nuestro efecto
+    &__radio-input{
+        display: none;
+
+    }
+
+    &__radio-label {
+        font-size: $default-font-size;
+        cursor: pointer;
+        position: relative;
+        padding-left: 4.5rem;
+
+    }
+
+    &__radio-button {
+        height: 3rem;
+        width: 3rem;
+        border: 5px solid $color-primary;
+        border-radius: 50%;
+        //hacemos display inlin-block para que quede redondo, si no es una elipse
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: -.4rem;
+
+
+        &::after {
+            //RECORDATORIO  cuando usamos psudoelementes deplegamos content="" y la propiedad display
+            content: "";
+
+            position: absolute; //AQUI ESTA LA POSICION PARA QUE FUNCIONEN EL TOP Y LEFT Y EL PULSADO DEL BOTON QUEDE CENTRADO
+
+            display: block;
+            height: 1.3rem;
+            width: 1.3rem;
+            border-radius: 50%;
+            //para centrarlo usamos position:absolut, el padre no tiene que ser realtiv, en este caso es absolut tambien
+
+            // NOTA SIEMPRE QUE UTILIZAMOS TOP Y LEFT NECESITAMOS ESTABLECER UNA POSICION
+            top: 50%;
+            left: 50%;
+
+
+            //esto es para centrarlo
+            transform: translate(-50%, -50%);
+            background-color: $color-primary;
+            //le damos opacity 0 para hacer luego la magia del boton
+            opacity: 0;
+            transition: opacity .2s;
+
+        }
+
+    }
+    
+    // si vemos el codigo html lo que estamos haciendo aqui es usar el sibbling general, para seleccionar el lavel y despues dar el efecto hover  al radio button
+    // Cuando __radio-input sea seleccionado el __radio-button estara activo
+    &__radio-input:checked ~ &__radio-label &__radio-button::after {
+        opacity: 1;
+
+    }
+}
